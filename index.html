@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIFA World Cup 26 — Sweepstake</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://flagcdn.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -341,6 +342,8 @@ const UPDATES = [
 
 /* ================= RENDER ================= */
 const ROUND_LABEL = {G:"Group", R32:"Round of 32", R16:"Round of 16", QF:"Quarter-final", SF:"Semi-final", "3P":"3rd Place", F:"FINAL"};
+/* flag <img> with graceful fallback if the flag CDN is unreachable */
+const flagImg = t => `<img src="https://flagcdn.com/w40/${FLAGS[t]}.png" srcset="https://flagcdn.com/w80/${FLAGS[t]}.png 2x" alt="${t}" loading="lazy" onerror="this.outerHTML='<span class=&quot;ph&quot;>⚽</span>'">`;
 const ownerOf = t => Object.keys(PLAYERS).find(p => PLAYERS[p].teams.includes(t)) || null;
 const fmtD = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',weekday:'long',day:'numeric',month:'long'});
 const fmtT = new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Dubai',hour:'2-digit',minute:'2-digit',hour12:false});
@@ -375,7 +378,7 @@ function renderSquads(){
       const dead=isOut(t);
       const tr=TRADED[t]===p?`<span class="badge trade">trade</span>`:'';
       const ob=dead?`<span class="badge out">out</span>`:'';
-      return `<div class="tm${dead?' out':''}"><img src="https://flagcdn.com/w40/${FLAGS[t]}.png" alt=""><span class="n">${t}</span>${tr}${ob}<span class="g">GRP ${TEAM_GROUP[t]||'?'}</span></div>`;
+      return `<div class="tm${dead?' out':''}">${flagImg(t)}<span class="n">${t}</span>${tr}${ob}<span class="g">GRP ${TEAM_GROUP[t]||'?'}</span></div>`;
     }).join('');
     card.innerHTML=`<div class="phead" onclick="this.parentElement.classList.toggle('open')">
         <div class="av" style="background:${info.color}">${p[0]}</div>
@@ -401,7 +404,7 @@ function renderChips(){
 }
 function sideHTML(team,right,winner){
   const own=ownerOf(team);
-  const flag=FLAGS[team]?`<img src="https://flagcdn.com/w40/${FLAGS[team]}.png" alt="">`:`<span class="ph">⚽</span>`;
+  const flag=FLAGS[team]?flagImg(team):`<span class="ph">⚽</span>`;
   const name=`<span class="tn ${winner?'winner':''}">${team}${own?`<span class="ow" style="color:${PLAYERS[own].color}">${own}</span>`:''}</span>`;
   return right?name+flag:flag+name;
 }
