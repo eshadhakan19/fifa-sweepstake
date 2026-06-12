@@ -158,6 +158,11 @@ footer a{color:var(--teal);text-decoration:none}
     <p>First player to have ALL 8 teams knocked out treats everyone to dinner. Group-stage exits count!</p>
     <div class="meter" id="meter"></div>
   </div>
+  <div class="dinner" style="background:linear-gradient(135deg,rgba(25,229,143,.10),rgba(39,217,255,.06));border-color:rgba(25,229,143,.3)">
+    <h3 style="color:var(--green)">👑 Title Race — Who's Winning the Sweepstake?</h3>
+    <p>Each player's chance that one of their teams lifts the trophy — based on bookmaker title odds, recalculated automatically as teams are knocked out.</p>
+    <div class="meter" id="winmeter"></div>
+  </div>
   <h2><span class="bar"></span>The Squads</h2>
   <div class="grid" id="pgrid"></div>
 </section>
@@ -205,6 +210,9 @@ const TRADED = {"Portugal":"Basim","Brazil":"Anish","Norway":"Esha","Japan":"Sam
 const ELIMINATED = [];
 let OUT = new Set(ELIMINATED);
 const isOut = t => OUT.has(t);
+
+/* Outright title odds (BetMGM, 11 Jun 2026) as X-to-1 — used for the Title Race meter */
+const ODDS = {"Spain":4.5,"France":5,"England":7,"Portugal":8,"Argentina":9,"Brazil":9,"Germany":14,"Netherlands":20,"Belgium":33,"Norway":33,"Colombia":40,"Morocco":40,"Japan":50,"USA":50,"Mexico":66,"Senegal":66,"Switzerland":66,"Türkiye":66,"Uruguay":66,"Croatia":80,"Ecuador":80,"Sweden":100,"Austria":150,"Canada":150,"Côte d'Ivoire":200,"Algeria":250,"Bosnia and Herzegovina":250,"Czechia":250,"Egypt":250,"Korea Republic":250,"Paraguay":250,"Scotland":250,"Australia":500,"Ghana":500,"IR Iran":500,"Tunisia":500,"Congo DR":750,"Cabo Verde":1000,"Iraq":1000,"Jordan":1000,"New Zealand":1000,"Panama":1000,"Qatar":1000,"Saudi Arabia":1000,"South Africa":1000,"Uzbekistan":1000,"Curaçao":2500,"Haiti":2500};
 
 const FLAGS = {"Mexico":"mx","South Africa":"za","Korea Republic":"kr","Czechia":"cz","Canada":"ca","Bosnia and Herzegovina":"ba","Qatar":"qa","Switzerland":"ch","Brazil":"br","Morocco":"ma","Haiti":"ht","Scotland":"gb-sct","USA":"us","Paraguay":"py","Australia":"au","Türkiye":"tr","Germany":"de","Curaçao":"cw","Côte d'Ivoire":"ci","Ecuador":"ec","Netherlands":"nl","Japan":"jp","Sweden":"se","Tunisia":"tn","Belgium":"be","Egypt":"eg","IR Iran":"ir","New Zealand":"nz","Spain":"es","Cabo Verde":"cv","Saudi Arabia":"sa","Uruguay":"uy","France":"fr","Senegal":"sn","Iraq":"iq","Norway":"no","Argentina":"ar","Algeria":"dz","Austria":"at","Jordan":"jo","Portugal":"pt","Congo DR":"cd","Uzbekistan":"uz","Colombia":"co","England":"gb-eng","Croatia":"hr","Ghana":"gh","Panama":"pa"};
 
@@ -514,7 +522,23 @@ function computeEliminations(){
   });
 }
 
-function renderAll(){ computeEliminations(); renderSquads(); renderChips(); renderMatches(); renderUpdates(); }
+/* Title Race: P(player wins) = sum of implied odds of their alive teams, normalised over all alive teams */
+function renderWinMeter(){
+  const w=document.getElementById('winmeter'); if(!w) return; w.innerHTML='';
+  const weight=t=>isOut(t)?0:1/((ODDS[t]??1000)+1);
+  const total=Object.values(PLAYERS).flatMap(p=>p.teams).reduce((s,t)=>s+weight(t),0);
+  const rows=Object.entries(PLAYERS).map(([p,i])=>({p,c:i.teams.reduce((s,t)=>s+weight(t),0)/total*100,color:i.color}))
+    .sort((a,b)=>b.c-a.c);
+  rows.forEach((r,idx)=>{
+    const row=document.createElement('div');row.className='row';
+    row.innerHTML=`<span class="nm" style="color:${r.color}">${idx===0?'👑 ':''}${r.p}</span>
+      <div class="trk"><div class="fil" style="width:${r.c}%;background:linear-gradient(90deg,${r.color},var(--teal))"></div></div>
+      <span class="ct">${r.c.toFixed(1)}%</span>`;
+    w.appendChild(row);
+  });
+}
+
+function renderAll(){ computeEliminations(); renderWinMeter(); renderSquads(); renderChips(); renderMatches(); renderUpdates(); }
 
 async function init(){
   renderAll();                         /* instant paint with saved data */
