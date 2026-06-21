@@ -77,6 +77,8 @@ h2 .bar{width:5px;height:24px;border-radius:3px;background:linear-gradient(var(-
 .badge{font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:999px;text-transform:uppercase}
 .badge.trade{background:rgba(160,107,255,.18);color:var(--purple);border:1px solid rgba(160,107,255,.4)}
 .badge.out{background:rgba(255,62,95,.15);color:var(--red);border:1px solid rgba(255,62,95,.4)}
+.badge.through{background:rgba(25,229,143,.15);color:var(--green);border:1px solid rgba(25,229,143,.4)}
+.tm.in{background:rgba(25,229,143,.05);border:1px solid rgba(25,229,143,.18)}
 
 /* FILTERS */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
@@ -207,8 +209,11 @@ const PLAYERS = {
 };
 const TRADED = {"Portugal":"Basim","Brazil":"Anish","Norway":"Esha","Japan":"Sameer"};
 
+/* Teams confirmed through to Round of 32 (mathematically secured top-2 in group) */
+const QUALIFIED = ["USA","Mexico","Germany"];
+
 /* Manual override list — auto-elimination is computed from live scores; add names here only to force-mark a team out */
-const ELIMINATED = [];
+const ELIMINATED = ["Türkiye","Tunisia","Haiti"];
 let OUT = new Set(ELIMINATED);
 const isOut = t => OUT.has(t);
 
@@ -248,14 +253,14 @@ const MATCHES = [
 [27,"G","B","2026-06-18T22:00Z","Canada","Qatar",6,0],
 [28,"G","A","2026-06-19T01:00Z","Mexico","Korea Republic",1,0],
 [32,"G","D","2026-06-19T19:00Z","USA","Australia",2,0],
-[30,"G","C","2026-06-19T22:00Z","Scotland","Morocco",null,null],
-[29,"G","C","2026-06-20T01:00Z","Brazil","Haiti",null,null],
-[31,"G","D","2026-06-20T04:00Z","Türkiye","Paraguay",null,null],
-[35,"G","F","2026-06-20T17:00Z","Netherlands","Sweden",null,null],
-[33,"G","E","2026-06-20T20:00Z","Germany","Côte d'Ivoire",null,null],
-[34,"G","E","2026-06-21T00:00Z","Ecuador","Curaçao",null,null],
-[36,"G","F","2026-06-21T04:00Z","Tunisia","Japan",null,null],
-[38,"G","H","2026-06-21T16:00Z","Spain","Saudi Arabia",null,null],
+[30,"G","C","2026-06-19T22:00Z","Scotland","Morocco",0,1],
+[29,"G","C","2026-06-20T01:00Z","Brazil","Haiti",3,0],
+[31,"G","D","2026-06-20T04:00Z","Türkiye","Paraguay",0,1],
+[35,"G","F","2026-06-20T17:00Z","Netherlands","Sweden",5,1],
+[33,"G","E","2026-06-20T20:00Z","Germany","Côte d'Ivoire",2,1],
+[34,"G","E","2026-06-21T00:00Z","Ecuador","Curaçao",0,0],
+[36,"G","F","2026-06-21T04:00Z","Tunisia","Japan",0,4],
+[38,"G","H","2026-06-21T16:00Z","Spain","Saudi Arabia",4,0],
 [39,"G","G","2026-06-21T19:00Z","Belgium","IR Iran",null,null],
 [37,"G","H","2026-06-21T22:00Z","Uruguay","Cabo Verde",null,null],
 [40,"G","G","2026-06-22T01:00Z","New Zealand","Egypt",null,null],
@@ -328,6 +333,26 @@ const MATCHES = [
 const VENUES = {1:"Estadio Azteca, Mexico City",2:"Guadalajara",3:"Toronto",4:"Los Angeles",8:"San Francisco Bay Area",7:"New York/New Jersey",5:"Boston",6:"Vancouver",10:"Houston",11:"Dallas",9:"Philadelphia",12:"Monterrey",14:"Atlanta",16:"Seattle",13:"Miami",15:"Los Angeles",17:"New York/New Jersey",18:"Boston",19:"Kansas City",20:"San Francisco Bay Area",23:"Houston",22:"Dallas",21:"Toronto",24:"Mexico City",25:"Atlanta",26:"Los Angeles",27:"Vancouver",28:"Guadalajara",32:"Seattle",30:"Boston",29:"Philadelphia",31:"San Francisco Bay Area",35:"Houston",33:"Toronto",34:"Kansas City",36:"Monterrey",38:"Atlanta",39:"Los Angeles",37:"Miami",40:"Vancouver",43:"Dallas",42:"Philadelphia",41:"New York/New Jersey",44:"San Francisco Bay Area",47:"Houston",45:"Boston",46:"Toronto",48:"Guadalajara",51:"Vancouver",52:"Seattle",49:"Miami",50:"Atlanta",53:"Mexico City",54:"Monterrey",55:"Philadelphia",56:"New York/New Jersey",57:"Dallas",58:"Kansas City",59:"Los Angeles",60:"San Francisco Bay Area",61:"Boston",62:"Toronto",65:"Houston",66:"Guadalajara",63:"Seattle",64:"Vancouver",67:"New York/New Jersey",68:"Philadelphia",71:"Miami",72:"Atlanta",69:"Kansas City",70:"Dallas",73:"Los Angeles",76:"Houston",74:"Boston",75:"Monterrey",78:"Dallas",77:"New York/New Jersey",79:"Mexico City",80:"Atlanta",82:"Seattle",81:"San Francisco Bay Area",84:"Los Angeles",83:"Toronto",85:"Vancouver",88:"Dallas",86:"Miami",87:"Kansas City",90:"Houston",89:"Philadelphia",91:"New York/New Jersey",92:"Mexico City",93:"Dallas",94:"Seattle",95:"Atlanta",96:"Vancouver",97:"Boston",98:"Los Angeles",99:"Miami",100:"Kansas City",101:"Dallas",102:"Atlanta",103:"Miami",104:"New York/New Jersey"};
 
 const UPDATES = [
+ {d:"21 Jun 2026", t:"🇪🇸 Spain 4-0 Saudi Arabia — Basim's big guns finally fire, Esha takes a hit", hot:true,
+  p:"Basim's Spain emphatically ended their group-stage stuttering with a commanding 4-0 demolition of Esha's Saudi Arabia in Atlanta. After opening with a 0-0 against Cabo Verde, Spain have reminded the tournament who they are. Esha's Saudi Arabia — who had looked plucky after drawing with Uruguay — are now in serious trouble with only one point from two games. Spain top Group H and look every inch the favourites."},
+ {d:"21 Jun 2026", t:"🇯🇵 Japan 4-0 Tunisia — Sameer's Japan ruthless, Anish's Tunisia are out", hot:true,
+  p:"Sameer's Japan put in a clinical performance in Monterrey, hammering Anish's Tunisia 4-0 to seal their place in the knockout frame. It was a night to forget for Anish — Tunisia, who were already reeling from a 5-1 opener against Sweden, have now conceded 12 goals and scored just one. Tunisia are eliminated from the sweepstake. Japan and Netherlands both sit on four points heading into a fascinating Group F finale."},
+ {d:"21 Jun 2026", t:"🤝 Ecuador 0-0 Curaçao — Neha and Esha play out a nothing-burger", hot:false,
+  p:"A drab goalless draw in Kansas City as Neha's Ecuador and Esha's Curaçao shared the spoils. Neither side could find the net, leaving Ecuador on one point and Curaçao on one point heading into matchday 3. Curaçao — already on the wrong end of a 7-1 drubbing from Germany — are effectively out of the tournament. Ecuador need a big result against Germany in the finale to have any hope."},
+ {d:"21 Jun 2026", t:"🔴 Three teams knocked out: Tunisia, Türkiye & Haiti eliminated", hot:false,
+  p:"With matchday 2 now concluded for Groups C, D, E and F, three teams have been eliminated from the sweepstake. Anish loses Tunisia (Group F, 0 pts, GD -12) and Haiti (Group C, 0 pts, GD -4). Basim loses Türkiye (Group D, 0 pts, GD -5 — they face an impossible Round 3 clash against USA). The dinner-loser pressure is building!"},
+ {d:"21 Jun 2026", t:"✅ USA, Mexico & Germany confirmed in Round of 32!", hot:false,
+  p:"Three teams have mathematically secured their place in the knockout Round of 32. Sameer's USA (6 pts, Group D), Neha's Mexico (6 pts, Group A) and Sameer's Germany (6 pts, Group E) are all through with a game to spare. It's a good day for Sameer — two of the three confirmed qualifiers are his. Neha quietly adds Mexico to her growing list of surviviors."},
+ {d:"21 Jun 2026", t:"🇩🇪 Germany 2-1 Côte d'Ivoire — Sameer beats himself again", hot:false,
+  p:"Sameer's Germany claimed three points in Toronto, edging out Sameer's Côte d'Ivoire 2-1 in what was essentially an internal battle. Germany top Group E with a perfect six points, while Côte d'Ivoire's knockout hopes now hinge entirely on matchday 3. When you own both teams, every result is bittersweet — Sameer's sweepstake empire giveth and taketh away."},
+ {d:"20 Jun 2026", t:"🚨 Netherlands 5-1 Sweden — Sameer batters Esha in Group F", hot:true,
+  p:"Sameer's Netherlands put on a clinical masterclass in Houston, routing Esha's Sweden 5-1 in matchday 2's standout result. The Dutch are through to the knockouts with six points from six, while Esha's Sweden — who started so brightly with a 5-1 win of their own — must beat Japan on matchday 3 to survive. After Curaçao's 7-1 horror show, Esha now has two teams on the wrong end of big scorelines."},
+ {d:"20 Jun 2026", t:"⚡ Paraguay 1-0 Türkiye — Sameer stings Basim in San Francisco", hot:false,
+  p:"Sameer's Paraguay picked up a crucial 1-0 win over Basim's Türkiye, leaving the Turks in deep trouble with zero points from two games. Basim's Türkiye now face a must-win matchday 3 against USA — ironically, also Sameer's — which makes it a pretty bleak outlook. Paraguay are back in the mix for a Round of 32 spot."},
+ {d:"20 Jun 2026", t:"🇧🇷 Brazil 3-0 Haiti — Anish's powerhouse tramples Anish's plucky underdogs", hot:true,
+  p:"Anish's Brazil were ruthless in Philadelphia, sweeping aside Anish's Haiti 3-0 to go joint-top of Group C. A familiar sweepstake dynamic: Anish's heavyweight delivers while Anish's lightweight takes a battering. Brazil have six points and look in ominous form — Haiti's tournament is all but over heading into matchday 3."},
+ {d:"20 Jun 2026", t:"🇲🇦 Morocco 1-0 Scotland — Basim bounces back, Esha's hopes dented", hot:false,
+  p:"Basim's Morocco got their Group C campaign back on track with a 1-0 win over Esha's Scotland in Boston. Scotland had started superbly with their opening-match victory but now face a do-or-die clash with Brazil in matchday 3. Morocco are level on three points with Brazil — Group C is beautifully poised and is going all the way to the wire."},
  {d:"19 Jun 2026", t:"🇺🇸 USA 2-0 Australia — Sameer tops Group D, Anish squeezed", hot:false,
   p:"Sameer's USA made it six points from two games with a comfortable 2-0 win over Anish's Australia in Seattle. The Americans look the class of Group D — imperious, clinical, and already through to the knockouts. Anish's Socceroos are clinging to three points with a tricky Paraguay game still to come."},
  {d:"19 Jun 2026", t:"🇲🇽 Mexico 1-0 Korea Republic — Neha through, Basim's Korea in the mire", hot:false,
@@ -430,9 +455,11 @@ function renderSquads(){
     const card=document.createElement('div');card.className='pcard open';
     const teams=info.teams.map(t=>{
       const dead=isOut(t);
+      const through=!dead&&QUALIFIED.includes(t);
       const tr=TRADED[t]===p?`<span class="badge trade">trade</span>`:'';
       const ob=dead?`<span class="badge out">out</span>`:'';
-      return `<div class="tm${dead?' out':''}">${flagImg(t)}<span class="n">${t}</span>${tr}${ob}<span class="g">GRP ${TEAM_GROUP[t]||'?'}</span></div>`;
+      const qb=through?`<span class="badge through">R32 ✓</span>`:'';
+      return `<div class="tm${dead?' out':''}${through?' in':''}">${flagImg(t)}<span class="n">${t}</span>${tr}${ob}${qb}<span class="g">GRP ${TEAM_GROUP[t]||'?'}</span></div>`;
     }).join('');
     card.innerHTML=`<div class="phead" onclick="this.parentElement.classList.toggle('open')">
         <div class="av" style="background:${info.color}">${p[0]}</div>
