@@ -210,7 +210,7 @@ const PLAYERS = {
 const TRADED = {"Portugal":"Basim","Brazil":"Anish","Norway":"Esha","Japan":"Sameer"};
 
 /* Teams confirmed through to Round of 32 (mathematically secured top-2 in group) */
-const QUALIFIED = ["USA","Mexico","Germany"];
+const QUALIFIED = ["USA","Mexico","Germany","Spain"];
 
 /* Manual override list — auto-elimination is computed from live scores; add names here only to force-mark a team out */
 const ELIMINATED = ["Türkiye","Tunisia","Haiti"];
@@ -262,8 +262,8 @@ const MATCHES = [
 [36,"G","F","2026-06-21T04:00Z","Tunisia","Japan",0,4],
 [38,"G","H","2026-06-21T16:00Z","Spain","Saudi Arabia",4,0],
 [39,"G","G","2026-06-21T19:00Z","Belgium","IR Iran",0,0],
-[37,"G","H","2026-06-21T22:00Z","Uruguay","Cabo Verde",null,null],
-[40,"G","G","2026-06-22T01:00Z","New Zealand","Egypt",null,null],
+[37,"G","H","2026-06-21T22:00Z","Uruguay","Cabo Verde",2,2],
+[40,"G","G","2026-06-22T01:00Z","New Zealand","Egypt",1,3],
 [43,"G","J","2026-06-22T17:00Z","Argentina","Austria",null,null],
 [42,"G","I","2026-06-22T21:00Z","France","Iraq",null,null],
 [41,"G","I","2026-06-23T00:00Z","Norway","Senegal",null,null],
@@ -333,6 +333,12 @@ const MATCHES = [
 const VENUES = {1:"Estadio Azteca, Mexico City",2:"Guadalajara",3:"Toronto",4:"Los Angeles",8:"San Francisco Bay Area",7:"New York/New Jersey",5:"Boston",6:"Vancouver",10:"Houston",11:"Dallas",9:"Philadelphia",12:"Monterrey",14:"Atlanta",16:"Seattle",13:"Miami",15:"Los Angeles",17:"New York/New Jersey",18:"Boston",19:"Kansas City",20:"San Francisco Bay Area",23:"Houston",22:"Dallas",21:"Toronto",24:"Mexico City",25:"Atlanta",26:"Los Angeles",27:"Vancouver",28:"Guadalajara",32:"Seattle",30:"Boston",29:"Philadelphia",31:"San Francisco Bay Area",35:"Houston",33:"Toronto",34:"Kansas City",36:"Monterrey",38:"Atlanta",39:"Los Angeles",37:"Miami",40:"Vancouver",43:"Dallas",42:"Philadelphia",41:"New York/New Jersey",44:"San Francisco Bay Area",47:"Houston",45:"Boston",46:"Toronto",48:"Guadalajara",51:"Vancouver",52:"Seattle",49:"Miami",50:"Atlanta",53:"Mexico City",54:"Monterrey",55:"Philadelphia",56:"New York/New Jersey",57:"Dallas",58:"Kansas City",59:"Los Angeles",60:"San Francisco Bay Area",61:"Boston",62:"Toronto",65:"Houston",66:"Guadalajara",63:"Seattle",64:"Vancouver",67:"New York/New Jersey",68:"Philadelphia",71:"Miami",72:"Atlanta",69:"Kansas City",70:"Dallas",73:"Los Angeles",76:"Houston",74:"Boston",75:"Monterrey",78:"Dallas",77:"New York/New Jersey",79:"Mexico City",80:"Atlanta",82:"Seattle",81:"San Francisco Bay Area",84:"Los Angeles",83:"Toronto",85:"Vancouver",88:"Dallas",86:"Miami",87:"Kansas City",90:"Houston",89:"Philadelphia",91:"New York/New Jersey",92:"Mexico City",93:"Dallas",94:"Seattle",95:"Atlanta",96:"Vancouver",97:"Boston",98:"Los Angeles",99:"Miami",100:"Kansas City",101:"Dallas",102:"Atlanta",103:"Miami",104:"New York/New Jersey"};
 
 const UPDATES = [
+ {d:"22 Jun 2026", t:"🇪🇬 Egypt 3-1 New Zealand — Anish's Egypt storm into the knockout frame", hot:true,
+  p:"Anish's Egypt put on a composed, dominant display in Vancouver, beating Neha's New Zealand 3-1 to go top of Group G with four points. Egypt have been one of the tournament's quiet overachievers — first a 1-1 with Belgium, now a convincing win. Neha's New Zealand slip to just one point and face a must-win finale against Belgium. It's a big momentum swing in Group G."},
+ {d:"22 Jun 2026", t:"🤝 Uruguay 2-2 Cabo Verde — Neha and Esha share a thriller in Miami", hot:false,
+  p:"A dramatic 2-2 draw as Neha's Uruguay and Esha's Cabo Verde produced the most entertaining Group H result yet. Both teams gave it everything in Miami — Uruguay levelled twice, Cabo Verde refused to lie down. Uruguay stay on two points, Cabo Verde also on two, and Saudi Arabia on one. With Spain already on four, matchday 3 will be a frantic three-way scramble for the second qualifying spot. Esha's Cabo Verde are very much alive."},
+ {d:"22 Jun 2026", t:"✅ Spain confirmed in Round of 32 — Basim's big team is through", hot:false,
+  p:"With Uruguay and Cabo Verde both on two points after matchday 2, Spain (4 pts) cannot mathematically be overtaken for a top-two finish in Group H regardless of their Round 3 result. Basim's Spain join USA, Mexico and Germany as the confirmed Round of 32 qualifiers. After a slow start (0-0 vs Cabo Verde), the Spaniards have recovered their swagger."},
  {d:"21 Jun 2026", t:"🇧🇪 Belgium 0-0 IR Iran — Bianca and Esha cancel each other out in LA", hot:false,
   p:"Another Group G stalemate as Bianca's Belgium and Esha's IR Iran played out a goalless draw in Los Angeles. Belgium have now drawn both group games (1-1 vs Egypt, 0-0 vs Iran) and find themselves in a tricky spot heading into the decider against New Zealand. Esha will take a point — Iran stay very much alive in a Group G where not a single match has produced a winner yet."},
  {d:"21 Jun 2026", t:"🇪🇸 Spain 4-0 Saudi Arabia — Basim's big guns finally fire, Esha takes a hit", hot:true,
