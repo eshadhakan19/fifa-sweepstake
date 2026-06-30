@@ -213,7 +213,7 @@ const TRADED = {"Portugal":"Basim","Brazil":"Anish","Norway":"Esha","Japan":"Sam
 const QUALIFIED = ["USA","Mexico","Germany","Spain","South Africa","Canada","Brazil","Morocco","Netherlands","Japan","France","Sweden","Côte d'Ivoire","Norway","Switzerland","Bosnia and Herzegovina","Belgium","Croatia","Argentina","Cabo Verde","Australia","Egypt","England","Paraguay"];
 
 /* Manual override list — auto-elimination is computed from live scores; add names here only to force-mark a team out */
-const ELIMINATED = ["Türkiye","Tunisia","Haiti"];
+const ELIMINATED = ["Türkiye","Tunisia","Haiti","Germany","Netherlands"];
 let OUT = new Set(ELIMINATED);
 const isOut = t => OUT.has(t);
 
@@ -491,6 +491,8 @@ const UPDATES = [
 
 /* ================= RENDER ================= */
 const ROUND_LABEL = {G:"Group", R32:"Round of 32", R16:"Round of 16", QF:"Quarter-final", SF:"Semi-final", "3P":"3rd Place", F:"FINAL"};
+const ROUND_ORDER = ['R32','R16','QF','SF','3P','F'];
+const STAGE_BADGE = {R32:'R32 ✓',R16:'R16 ✓',QF:'QF ✓',SF:'SF ✓','3P':'3rd ✓',F:'Final ✓'};
 /* flag <img> with graceful fallback if the flag CDN is unreachable */
 const flagImg = t => `<img src="https://flagcdn.com/w40/${FLAGS[t]}.png" srcset="https://flagcdn.com/w80/${FLAGS[t]}.png 2x" alt="${t}" loading="lazy" onerror="this.outerHTML='<span class=&quot;ph&quot;>⚽</span>'">`;
 const ownerOf = t => Object.keys(PLAYERS).find(p => PLAYERS[p].teams.includes(t)) || null;
@@ -525,10 +527,18 @@ function renderSquads(){
     const card=document.createElement('div');card.className='pcard open';
     const teams=info.teams.map(t=>{
       const dead=isOut(t);
-      const through=!dead&&QUALIFIED.includes(t);
+      /* Compute the furthest knockout round this team appears in */
+      let furthest=null;
+      MATCHES.forEach(m=>{
+        if(m[1]!=='G'&&(m[4]===t||m[5]===t)){
+          const ri=ROUND_ORDER.indexOf(m[1]);
+          if(furthest===null||ri>ROUND_ORDER.indexOf(furthest)) furthest=m[1];
+        }
+      });
+      const through=!dead&&furthest!==null;
       const tr=TRADED[t]===p?`<span class="badge trade">trade</span>`:'';
       const ob=dead?`<span class="badge out">out</span>`:'';
-      const qb=through?`<span class="badge through">R32 ✓</span>`:'';
+      const qb=through?`<span class="badge through">${STAGE_BADGE[furthest]||'R32 ✓'}</span>`:'';
       return `<div class="tm${dead?' out':''}${through?' in':''}">${flagImg(t)}<span class="n">${t}</span>${tr}${ob}${qb}<span class="g">GRP ${TEAM_GROUP[t]||'?'}</span></div>`;
     }).join('');
     card.innerHTML=`<div class="phead" onclick="this.parentElement.classList.toggle('open')">
